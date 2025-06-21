@@ -1,0 +1,56 @@
+char* findLastWord(char* s, int length);
+
+int lengthOfLastWord(char* s) {
+    //Find length
+    int length = strlen(s);
+    //Find last word
+    char* lastWord = findLastWord(s, length);
+
+    //Determine the length of the last word
+    int wordLength = strlen(lastWord);
+
+    //Free lastword
+    free(lastWord);
+
+    //Return the length of the lastword
+    return wordLength;  
+}
+
+//Helper function
+char* findLastWord(char* s, int length) {
+    int lastLetter = 0;
+    int firstLetter = 0;
+
+    //Iterate reversely to find the word faster
+   for(int i = length; i > 0; i--) {
+        //If the end with no space
+        if ( s[i] == '\0' && isalpha(s[i-1]) )
+            lastLetter = i-1;
+        //If the sentence end with space
+        else if( s[i] == ' ' && isalpha(s[i-1]) )
+            lastLetter = i-1;
+        //If next is space
+        else if( isalpha(s[i]) && s[i-1] == ' ' ) {
+            firstLetter = i;
+            break;
+        } 
+    }
+
+    //Create word and length + 2 for one inclusive and one for null character
+    int newLength = lastLetter - firstLetter + 2;
+    char* lastWord = (char*) malloc(newLength * sizeof(char));
+
+    //Assigning the characters to the word
+    int j = 0;
+    for(int i = firstLetter; i < firstLetter + newLength - 1; i++) {
+        lastWord[j] = s[i];
+        j++;
+    }
+
+    //Assign the null character at the end
+    lastWord[j] = '\0';
+
+    //Return
+    return lastWord;
+}
+
